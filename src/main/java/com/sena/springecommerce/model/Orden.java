@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "productos")
+@Table(name = "ordenes")
 public class Orden {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // anotacion JPA
