@@ -12,6 +12,6 @@ import com.sena.springecommerce.model.Usuario;
 public interface IOrdenRepository extends JpaRepository<Orden, Integer>{
 
 
-	List<Orden> dindByUsuario(Usuario usuario);
+	List<Orden> findByUsuario(Usuario usuario);
 	
 }
