@@ -35,7 +35,7 @@ public class APIProductoController {
 	public List<Producto> getAllProducts() {
 		return productoService.findAll();
 	}
-
+	
 	// Endpoint GET para obetener un producto por ID
 	@GetMapping("/product/{id}")
 	public ResponseEntity<Producto> getProductById(@PathVariable Integer id) {
@@ -55,7 +55,7 @@ public class APIProductoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedProducto);
 	}
 
-	// Endpoint PUT prar actualizar un producto
+	// Endpoint PUT para actualizar un producto
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Producto> updateProduct(@PathVariable Integer id, @RequestBody Producto productoDetails) {
 		Optional<Producto> producto = productoService.get(id);
@@ -70,9 +70,9 @@ public class APIProductoController {
 		// Mantener la imagen existente a menos que se envie una nueva
 		if (productoDetails.getImagen() != null) {
 			existingProduct.setImagen(productoDetails.getImagen());
-			productoService.update(existingProduct);
 
 		}
+		productoService.update(existingProduct);
 		return ResponseEntity.ok(existingProduct);
 
 		// set: establecer get: enviar
@@ -90,6 +90,7 @@ public class APIProductoController {
 		if (!p.getImagen().equals("default.jpg")) {
 			//
 		}
+		productoService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 }
