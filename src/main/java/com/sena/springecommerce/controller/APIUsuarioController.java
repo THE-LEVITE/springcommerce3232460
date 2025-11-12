@@ -23,7 +23,7 @@ public class APIUsuarioController {
 	@Autowired
 	private IUsuarioService usuarioService;
 
-	@GetMapping
+	@GetMapping("/list")
 	public List<Usuario> getAllUsuarios() {
 		return usuarioService.findAll();
 	}
