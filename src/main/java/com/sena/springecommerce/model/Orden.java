@@ -98,8 +98,5 @@ public class Orden {
 		return "Orden [id=" + id + ", numero=" + numero + ", fechacreacion=" + fechacreacion + ", total=" + total + "]";
 	}
 	
-	
-	
-	
 
 }
