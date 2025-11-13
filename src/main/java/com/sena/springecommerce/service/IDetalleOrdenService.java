@@ -6,5 +6,4 @@ public interface IDetalleOrdenService {
 	
 	DetalleOrden save(DetalleOrden detalleorden);
 	
-	
 }

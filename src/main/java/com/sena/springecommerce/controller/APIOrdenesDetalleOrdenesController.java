@@ -30,65 +30,65 @@ public class APIOrdenesDetalleOrdenesController {
 	// ✅ Crear una nueva orden con detalles
 	@PostMapping
 	public ResponseEntity<Orden> crearOrden(@RequestBody Orden ordenRequest) {
-		// Validar usuario
-		Optional<Usuario> usuarioOpt = usuarioService.findById(ordenRequest.getUsuario().getId());
-		if (!usuarioOpt.isPresent()) {
-			return ResponseEntity.badRequest().build();
-		}
 
-		// Asignar usuario y número de orden
-		ordenRequest.setUsuario(usuarioOpt.get());
-		ordenRequest.setNumero(ordenService.generarNumeroOrden());
+	    // Validar usuario
+	    Optional<Usuario> usuarioOpt = usuarioService.findById(ordenRequest.getUsuario().getId());
+	    if (!usuarioOpt.isPresent()) {
+	        return ResponseEntity.badRequest().build();
+	    }
 
-		// ✅ Asignar la fecha actual automáticamente
-		ordenRequest.setFechacreacion(new Date());
+	    ordenRequest.setUsuario(usuarioOpt.get());
+	    ordenRequest.setNumero(ordenService.generarNumeroOrden());
+	    ordenRequest.setFechacreacion(new Date());
 
-		// Guardar la orden principal
-		Orden nuevaOrden = ordenService.save(ordenRequest);
+	    double totalOrden = 0.0;
 
-		// ✅ Guardar los detalles asociados y actualizar stock
-		if (ordenRequest.getDetalle() != null) {
-			for (DetalleOrden det : ordenRequest.getDetalle()) {
-				Optional<Producto> productoOpt = productoService.get(det.getProductos().getId());
-				if (!productoOpt.isPresent())
-					continue;
+	    // Procesar detalles antes de guardar la orden
+	    if (ordenRequest.getDetalle() != null) {
+	        for (DetalleOrden det : ordenRequest.getDetalle()) {
 
-				Producto producto = productoOpt.get();
-				
-				// Validar stock
-				if (producto.getCantidad() < det.getCantidad()) {
-					return ResponseEntity.badRequest().body(null); // Stock insuficiente
-				}
+	            Optional<Producto> productoOpt = productoService.get(det.getProductos().getId());
+	            if (!productoOpt.isPresent()) continue;
 
-				// Restar cantidad del inventario
-				producto.setCantidad(producto.getCantidad() - det.getCantidad());
-				productoService.update(producto);
+	            Producto producto = productoOpt.get();
 
-				// Asignar relaciones
-				det.setProductos(producto);
-				det.setOrden(nuevaOrden);
+	            if (producto.getCantidad() < det.getCantidad()) {
+	                return ResponseEntity.badRequest().body(null);
+	            }
 
-				// Calcular total del detalle si no se envía
-				if (det.getTotal() == null) {
-					det.setTotal(det.getCantidad() * det.getPrecio());
-				}
+	            producto.setCantidad(producto.getCantidad() - det.getCantidad());
+	            productoService.update(producto);
 
-				detalleService.save(det);
-			}
-		}
+	            det.setProductos(producto);
 
-		return ResponseEntity.ok(nuevaOrden);
+	            if (det.getTotal() == null) {
+	                det.setTotal(det.getCantidad() * det.getPrecio());
+	            }
+
+	            totalOrden += det.getTotal();
+
+	            det.setOrden(ordenRequest); // asignación correcta
+	        }
+	    }
+
+	    ordenRequest.setTotal(totalOrden);
+
+	    // Guardar la orden junto con los detalles
+	    Orden nuevaOrden = ordenService.save(ordenRequest);
+
+	    return ResponseEntity.ok(nuevaOrden);
 	}
 
+
 	// ✅ Obtener todas las órdenes
-	@GetMapping
+	@GetMapping("/list")
 	public ResponseEntity<List<Orden>> listarOrdenes() {
 		List<Orden> ordenes = ordenService.findAll();
 		return ResponseEntity.ok(ordenes);
 	}
 
 	// ✅ Obtener una orden por ID
-	@GetMapping("/{id}")
+	@GetMapping("/orden/{id}")
 	public ResponseEntity<Orden> obtenerPorId(@PathVariable Integer id) {
 		Optional<Orden> ordenOpt = ordenService.findById(id);
 		return ordenOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
