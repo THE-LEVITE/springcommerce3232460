@@ -10,71 +10,71 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "detalles")
 public class DetalleOrden {
-	
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY) //anotacion JPA
-private Integer id;
-private String nombre;
-private Double cantidad;
-private double precio;
-private double total;
-	
-@ManyToOne
-private Orden orden;
-	
-@ManyToOne
-private Producto productos;
 
-public DetalleOrden() {
-		
-}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // anotacion JPA
+	private Integer id;
+	private String nombre;
+	private Integer cantidad;
+	private Double precio;
+	private Double total;
 
-public DetalleOrden(Integer id, String nombre, Double cantidad, double precio, double total) {
-	super();
-	this.id = id;
-	this.nombre = nombre;
-	this.cantidad = cantidad;
-	this.precio = precio;
-	this.total = total;
-}
+	@ManyToOne
+	private Orden orden;
 
-public Integer getId() {
-	return id;
-}
+	@ManyToOne
+	private Producto productos;
 
-public void setId(Integer id) {
-	this.id = id;
-}
+	public DetalleOrden() {
 
-public String getNombre() {
-	return nombre;
-}
+	}
 
-public void setNombre(String nombre) {
-	this.nombre = nombre;
-}
+	public DetalleOrden(Integer id, String nombre, Integer cantidad, Double precio, Double total) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.cantidad = cantidad;
+		this.precio = precio;
+		this.total = total;
+	}
 
-public Double getCantidad() {
-	return cantidad;
-}
+	public Integer getId() {
+		return id;
+	}
 
-public void setCantidad(Double cantidad) {
-	this.cantidad = cantidad;
-}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	public double getPrecio() {
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public Double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(double precio) {
+	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}
 
-	public double getTotal() {
+	public Double getTotal() {
 		return total;
 	}
 
-	public void setTotal(double total) {
+	public void setTotal(Double total) {
 		this.total = total;
 	}
 
@@ -99,7 +99,5 @@ public void setCantidad(Double cantidad) {
 		return "DetalleOrden [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", total=" + total + "]";
 	}
-	
-	
 
 }

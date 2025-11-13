@@ -54,7 +54,7 @@ public class APIProductoController {
 		Producto savedProducto = productoService.save(producto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedProducto);
 	}
-
+	
 	// Endpoint PUT para actualizar un producto
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Producto> updateProduct(@PathVariable Integer id, @RequestBody Producto productoDetails) {
