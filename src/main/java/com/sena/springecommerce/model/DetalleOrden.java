@@ -1,6 +1,7 @@
 package com.sena.springecommerce.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class DetalleOrden {
 
 	@ManyToOne
 	@JoinColumn(name = "orden_id")
-	@JsonBackReference
+	@JsonIgnoreProperties({"detalle"})
 	private Orden orden;
 
 	@ManyToOne
